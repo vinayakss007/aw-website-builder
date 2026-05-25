@@ -1,0 +1,10 @@
+export { default as RestaurantTemplate } from './RestaurantTemplate';
+export { default as HealthcareTemplate } from './HealthcareTemplate';
+export { default as RealEstateTemplate } from './RealEstateTemplate';
+export { default as EducationTemplate } from './EducationTemplate';
+export { default as FitnessTemplate } from './FitnessTemplate';
+export { default as TechnologyTemplate } from './TechnologyTemplate';
+export { default as LegalTemplate } from './LegalTemplate';
+export { default as PhotographyTemplate } from './PhotographyTemplate';
+export { default as SalonSpaTemplate } from './SalonSpaTemplate';
+export { default as ConstructionTemplate } from './ConstructionTemplate';
