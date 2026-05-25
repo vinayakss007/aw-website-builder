@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Legal Services</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', 'Times New Roman', serif; color: #333; line-height: 1.7; }
+        :root {
+            --primary: #1F1F1F;
+            --secondary: #FAFAFA;
+            --accent: #D4B106;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(31, 31, 31, 0.97); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 2px solid var(--accent);
+        }
+        .navbar .logo { color: var(--accent); font-size: 1.4rem; font-weight: bold; text-decoration: none; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(31, 31, 31, 0.8), rgba(31, 31, 31, 0.8)),
+                url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.2rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 650px; opacity: 0.9; }
+        .btn-primary {
+            background: var(--accent); color: var(--primary); padding: 15px 40px;
+            border: none; border-radius: 3px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 177, 6, 0.3); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
+
+        /* Practice Areas */
+        .practice-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; max-width: 1200px; margin: 0 auto;
+        }
+        .practice-card {
+            background: #fff; padding: 35px; border-radius: 5px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06); border-bottom: 3px solid var(--accent);
+            transition: transform 0.3s;
+        }
+        .practice-card:hover { transform: translateY(-5px); }
+        .practice-card .icon { font-size: 2rem; margin-bottom: 12px; color: var(--accent); }
+        .practice-card h3 { color: var(--primary); margin-bottom: 10px; }
+        .practice-card p { color: #666; font-size: 0.95rem; }
+
+        /* Attorneys */
+        .attorneys-section { background: var(--secondary); }
+        .attorneys-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1100px; margin: 0 auto;
+        }
+        .attorney-card { background: #fff; border-radius: 5px; overflow: hidden; box-shadow: 0 3px 15px rgba(0,0,0,0.06); }
+        .attorney-card img { width: 100%; height: 280px; object-fit: cover; }
+        .attorney-card .info { padding: 25px; }
+        .attorney-card h3 { color: var(--primary); margin-bottom: 5px; }
+        .attorney-card .title { color: var(--accent); font-size: 0.9rem; font-weight: 600; margin-bottom: 8px; }
+        .attorney-card p { color: #666; font-size: 0.9rem; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .about-grid img { width: 100%; border-radius: 5px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .about-content h2 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .about-content p { color: #555; margin-bottom: 15px; }
+
+        /* Case Results */
+        .results-section { background: var(--primary); color: #fff; }
+        .results-section .section-title { color: #fff; }
+        .results-section .section-subtitle { color: #aaa; }
+        .results-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .result-card { text-align: center; padding: 30px; border: 1px solid rgba(212,177,6,0.3); border-radius: 5px; }
+        .result-card .amount { font-size: 2.5rem; color: var(--accent); font-weight: bold; margin-bottom: 10px; }
+        .result-card .type { color: #ccc; font-size: 0.9rem; }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 5px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-left: 4px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 3px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; border-top: 2px solid var(--accent); }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#practice-areas">Practice Areas</a></li>
+            <li><a href="#attorneys">Attorneys</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#results">Results</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#contact" class="btn-primary">Free Consultation</a>
+        </div>
+    </section>
+
+    <!-- Practice Areas -->
+    <section id="practice-areas" style="background: var(--secondary);">
+        <h2 class="section-title">Practice Areas</h2>
+        <p class="section-subtitle">Comprehensive legal representation across multiple disciplines</p>
+        <div class="practice-grid">
+            <div class="practice-card">
+                <div class="icon">&#9878;</div>
+                <h3>Personal Injury</h3>
+                <p>Aggressive representation for accident victims. We fight for the maximum compensation you deserve.</p>
+            </div>
+            <div class="practice-card">
+                <div class="icon">&#127970;</div>
+                <h3>Corporate Law</h3>
+                <p>Strategic counsel for businesses from formation through complex transactions and litigation.</p>
+            </div>
+            <div class="practice-card">
+                <div class="icon">&#128106;</div>
+                <h3>Family Law</h3>
+                <p>Compassionate guidance through divorce, custody, adoption, and other family matters.</p>
+            </div>
+            <div class="practice-card">
+                <div class="icon">&#127968;</div>
+                <h3>Real Estate Law</h3>
+                <p>Protecting your interests in property transactions, disputes, and landlord-tenant issues.</p>
+            </div>
+            <div class="practice-card">
+                <div class="icon">&#128188;</div>
+                <h3>Employment Law</h3>
+                <p>Defending employee rights and advising employers on compliance and workplace issues.</p>
+            </div>
+            <div class="practice-card">
+                <div class="icon">&#128221;</div>
+                <h3>Estate Planning</h3>
+                <p>Securing your legacy with comprehensive wills, trusts, and succession planning.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Attorneys -->
+    <section id="attorneys" class="attorneys-section">
+        <h2 class="section-title">Our Attorneys</h2>
+        <p class="section-subtitle">Experienced advocates committed to achieving justice</p>
+        <div class="attorneys-grid">
+            <div class="attorney-card">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&q=80" alt="Attorney">
+                <div class="info">
+                    <h3>Jonathan R. Crawford</h3>
+                    <div class="title">Managing Partner</div>
+                    <p>25+ years in litigation. Former federal prosecutor. Licensed in CA, NY, and TX.</p>
+                </div>
+            </div>
+            <div class="attorney-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&q=80" alt="Attorney">
+                <div class="info">
+                    <h3>Victoria L. Sterling</h3>
+                    <div class="title">Senior Partner, Family Law</div>
+                    <p>Harvard Law. Specializing in complex divorce and custody cases for 18 years.</p>
+                </div>
+            </div>
+            <div class="attorney-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Attorney">
+                <div class="info">
+                    <h3>Marcus A. Blackwell</h3>
+                    <div class="title">Partner, Corporate Law</div>
+                    <p>Yale Law. Expert in M&A transactions and corporate governance.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?w=600&q=80" alt="Law Office">
+            <div class="about-content">
+                <h2>About {{businessName}}</h2>
+                <p>{{aboutText}}</p>
+                <p>For over three decades, our firm has been a pillar of legal excellence in the community. We combine aggressive advocacy with compassionate client service to deliver results that matter.</p>
+                <p>Our attorneys have recovered over $500 million for clients and have been recognized by Super Lawyers, Best Lawyers in America, and Martindale-Hubbell.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Results -->
+    <section id="results" class="results-section">
+        <h2 class="section-title">Notable Case Results</h2>
+        <p class="section-subtitle">A proven track record of success for our clients</p>
+        <div class="results-grid">
+            <div class="result-card">
+                <div class="amount">$12.5M</div>
+                <div class="type">Medical Malpractice Settlement</div>
+            </div>
+            <div class="result-card">
+                <div class="amount">$8.2M</div>
+                <div class="type">Auto Accident Verdict</div>
+            </div>
+            <div class="result-card">
+                <div class="amount">$5.7M</div>
+                <div class="type">Workplace Injury Award</div>
+            </div>
+            <div class="result-card">
+                <div class="amount">$3.1M</div>
+                <div class="type">Product Liability Settlement</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" style="background: var(--secondary);">
+        <h2 class="section-title">Client Testimonials</h2>
+        <p class="section-subtitle">What our clients say about their experience</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"After my accident, I didn't know where to turn. They took my case, fought the insurance company, and won a settlement that covered all my medical bills and lost wages."</div>
+                <div class="author">Thomas R. Henderson</div>
+                <div class="role">Personal Injury Client</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Professional, thorough, and genuinely caring. They handled my divorce with dignity and ensured the best outcome for my children."</div>
+                <div class="author">Maria K. Santos</div>
+                <div class="role">Family Law Client</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Their corporate team guided our startup through a complex acquisition. Their attention to detail saved us from potential issues that could have cost millions."</div>
+                <div class="author">Richard J. Palmer</div>
+                <div class="role">Corporate Client</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title">Schedule a Consultation</h2>
+        <p class="section-subtitle">Your first consultation is free. Let us review your case.</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Office</strong><br>{{address}}</div>
+                </div>
+                <p style="margin-top: 20px; color: #666; font-size: 0.9rem;"><em>Available 24/7 for emergencies. Evening and weekend appointments available upon request.</em></p>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
+                <input type="tel" placeholder="Phone Number">
+                <select><option>Select Practice Area</option><option>Personal Injury</option><option>Corporate Law</option><option>Family Law</option><option>Real Estate</option><option>Employment Law</option><option>Estate Planning</option></select>
+                <textarea placeholder="Brief description of your legal matter"></textarea>
+                <button class="btn-primary" style="width:100%;">Request Free Consultation</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#contact">Free Consultation</a></p>
+        <p style="margin-top:8px; font-size:0.8rem; color:#888;">Attorney advertising. Prior results do not guarantee a similar outcome.</p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

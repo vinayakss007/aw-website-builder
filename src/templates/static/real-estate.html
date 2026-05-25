@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Real Estate</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #135200;
+            --secondary: #F6FFED;
+            --accent: #52C41A;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(19, 82, 0, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            transition: all 0.3s ease;
+        }
+        .navbar .logo { color: #fff; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(19, 82, 0, 0.6), rgba(19, 82, 0, 0.6)),
+                url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; max-width: 600px; }
+        .btn-primary {
+            background: var(--accent); color: #fff; padding: 15px 40px;
+            border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(82, 196, 26, 0.4); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
+
+        /* Featured Properties */
+        .properties-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .property-card {
+            border-radius: 10px; overflow: hidden; box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+        .property-card:hover { transform: translateY(-5px); }
+        .property-card img { width: 100%; height: 220px; object-fit: cover; }
+        .property-card .info { padding: 20px; }
+        .property-card .price { color: var(--accent); font-size: 1.4rem; font-weight: bold; }
+        .property-card .details { color: #666; margin-top: 8px; }
+        .property-card .features { display: flex; gap: 15px; margin-top: 12px; color: #888; font-size: 0.9rem; }
+
+        /* Services */
+        .services-section { background: var(--secondary); }
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .service-card {
+            background: #fff; padding: 40px 30px; border-radius: 10px; text-align: center;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); transition: transform 0.3s;
+        }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .service-card h3 { color: var(--primary); margin-bottom: 10px; }
+
+        /* About */
+        .about-section { max-width: 1200px; margin: 0 auto; }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; }
+        .about-grid img { width: 100%; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .about-content h2 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .about-content p { color: #555; margin-bottom: 15px; }
+        .stats-row { display: flex; gap: 30px; margin-top: 25px; }
+        .stat { text-align: center; }
+        .stat .number { font-size: 2rem; color: var(--accent); font-weight: bold; }
+        .stat .label { font-size: 0.85rem; color: #888; }
+
+        /* Agents */
+        .agents-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .agent-card { text-align: center; }
+        .agent-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 4px solid var(--accent); }
+        .agent-card h3 { color: var(--primary); }
+        .agent-card .role { color: var(--accent); font-size: 0.9rem; margin-bottom: 8px; }
+        .agent-card p { color: #666; font-size: 0.9rem; }
+
+        /* Testimonials */
+        .testimonials-section { background: var(--secondary); }
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-left: 4px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-section { max-width: 800px; margin: 0 auto; }
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); }
+
+        /* Footer */
+        footer {
+            background: var(--primary); color: #fff; text-align: center;
+            padding: 30px 5%; font-size: 0.9rem;
+        }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .hero p { font-size: 1rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .stats-row { flex-wrap: wrap; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#properties">Properties</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#agents">Agents</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#properties" class="btn-primary">View Properties</a>
+        </div>
+    </section>
+
+    <!-- Featured Properties -->
+    <section id="properties">
+        <h2 class="section-title">Featured Properties</h2>
+        <p class="section-subtitle">Discover our handpicked selection of premium properties</p>
+        <div class="properties-grid">
+            <div class="property-card">
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Modern Villa">
+                <div class="info">
+                    <div class="price">$1,250,000</div>
+                    <div class="details">Modern Villa - Beverly Hills, CA</div>
+                    <div class="features"><span>4 Beds</span><span>3 Baths</span><span>3,200 sqft</span></div>
+                </div>
+            </div>
+            <div class="property-card">
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Luxury Estate">
+                <div class="info">
+                    <div class="price">$2,800,000</div>
+                    <div class="details">Luxury Estate - Malibu, CA</div>
+                    <div class="features"><span>6 Beds</span><span>5 Baths</span><span>5,500 sqft</span></div>
+                </div>
+            </div>
+            <div class="property-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Downtown Penthouse">
+                <div class="info">
+                    <div class="price">$890,000</div>
+                    <div class="details">Downtown Penthouse - Los Angeles, CA</div>
+                    <div class="features"><span>3 Beds</span><span>2 Baths</span><span>1,800 sqft</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services-section">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Comprehensive real estate solutions tailored to your needs</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">&#127968;</div>
+                <h3>Residential Sales</h3>
+                <p>Find your dream home with our expert guidance through every step of the buying process.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#127970;</div>
+                <h3>Commercial Properties</h3>
+                <p>Strategic commercial real estate investments to grow your business portfolio.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128200;</div>
+                <h3>Market Analysis</h3>
+                <p>Data-driven market insights to help you make informed real estate decisions.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128273;</div>
+                <h3>Property Management</h3>
+                <p>Full-service property management for landlords and real estate investors.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <div class="about-section">
+            <div class="about-grid">
+                <img src="https://images.unsplash.com/photo-1560520031-3a4dc4e9de0c?w=600&q=80" alt="Our Office">
+                <div class="about-content">
+                    <h2>About {{businessName}}</h2>
+                    <p>{{aboutText}}</p>
+                    <p>With decades of combined experience, our team of dedicated professionals is committed to helping you navigate the complex world of real estate with confidence and ease.</p>
+                    <div class="stats-row">
+                        <div class="stat">
+                            <div class="number">500+</div>
+                            <div class="label">Properties Sold</div>
+                        </div>
+                        <div class="stat">
+                            <div class="number">15+</div>
+                            <div class="label">Years Experience</div>
+                        </div>
+                        <div class="stat">
+                            <div class="number">98%</div>
+                            <div class="label">Client Satisfaction</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agents Section -->
+    <section id="agents" style="background: var(--secondary);">
+        <h2 class="section-title">Our Agents</h2>
+        <p class="section-subtitle">Meet our team of experienced real estate professionals</p>
+        <div class="agents-grid">
+            <div class="agent-card">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&q=80" alt="Agent">
+                <h3>Michael Richardson</h3>
+                <div class="role">Senior Agent</div>
+                <p>Specializing in luxury residential properties with 12 years of experience.</p>
+            </div>
+            <div class="agent-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80" alt="Agent">
+                <h3>Sarah Mitchell</h3>
+                <div class="role">Commercial Specialist</div>
+                <p>Expert in commercial real estate and investment properties.</p>
+            </div>
+            <div class="agent-card">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80" alt="Agent">
+                <h3>David Chen</h3>
+                <div class="role">Buyer's Agent</div>
+                <p>Dedicated to finding the perfect home for first-time buyers.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <h2 class="section-title">What Our Clients Say</h2>
+        <p class="section-subtitle">Hear from families who found their perfect home with us</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"They made our first home purchase absolutely seamless. From the initial consultation to closing day, every detail was handled with professionalism and care."</div>
+                <div class="author">Jennifer & Mark Thompson</div>
+                <div class="role">First-Time Home Buyers</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Sold our property above asking price in just two weeks. Their market knowledge and negotiation skills are truly exceptional."</div>
+                <div class="author">Robert Williams</div>
+                <div class="role">Property Seller</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"As an investor, I rely on their expertise for commercial acquisitions. They consistently identify high-value opportunities that others miss."</div>
+                <div class="author">Patricia Gonzales</div>
+                <div class="role">Real Estate Investor</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Ready to find your dream property? Contact us today.</p>
+        <div class="contact-section">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <div class="icon">&#128222;</div>
+                        <div><strong>Phone</strong><br>{{phone}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">&#9993;</div>
+                        <div><strong>Email</strong><br>{{email}}</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="icon">&#128205;</div>
+                        <div><strong>Office</strong><br>{{address}}</div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <input type="text" placeholder="Your Name">
+                    <input type="email" placeholder="Your Email">
+                    <input type="text" placeholder="Property Interest">
+                    <textarea placeholder="Your Message"></textarea>
+                    <button class="btn-primary" style="width:100%;">Send Message</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#contact">Contact Us</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

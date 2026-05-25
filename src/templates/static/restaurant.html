@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{businessName}} - Fine Dining Restaurant</title>
+  <style>
+    :root { --primary: #D4380D; --secondary: #FFF7E6; --accent: #FA8C16; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Georgia', serif; color: #333; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+    
+    /* Navigation */
+    nav { background: #1a1a1a; padding: 20px 0; position: fixed; width: 100%; top: 0; z-index: 100; }
+    nav .container { display: flex; justify-content: space-between; align-items: center; }
+    nav .logo { color: var(--accent); font-size: 1.8rem; font-weight: bold; text-decoration: none; }
+    nav ul { list-style: none; display: flex; gap: 30px; }
+    nav ul a { color: #fff; text-decoration: none; font-size: 0.95rem; transition: color 0.3s; }
+    nav ul a:hover { color: var(--accent); }
+
+    /* Hero */
+    .hero { height: 100vh; background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=1920&q=80') center/cover no-repeat; display: flex; align-items: center; justify-content: center; text-align: center; position: relative; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.5); }
+    .hero-content { position: relative; z-index: 1; color: #fff; }
+    .hero h1 { font-size: 4rem; margin-bottom: 20px; }
+    .hero p { font-size: 1.3rem; margin-bottom: 30px; max-width: 600px; }
+    .btn { display: inline-block; padding: 15px 40px; background: var(--primary); color: #fff; text-decoration: none; border-radius: 4px; font-size: 1.1rem; transition: background 0.3s; }
+    .btn:hover { background: #b52a08; }
+
+    /* Menu Section */
+    .menu { padding: 100px 0; background: var(--secondary); }
+    .section-title { text-align: center; font-size: 2.5rem; margin-bottom: 60px; color: var(--primary); }
+    .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px; }
+    .menu-category h3 { font-size: 1.5rem; color: var(--primary); margin-bottom: 20px; border-bottom: 2px solid var(--accent); padding-bottom: 10px; }
+    .menu-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px dotted #ddd; }
+    .menu-item-name { font-weight: bold; }
+    .menu-item-price { color: var(--primary); font-weight: bold; }
+
+    /* About */
+    .about { padding: 100px 0; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; }
+    .about img { width: 100%; border-radius: 8px; }
+    .about h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+    .about p { line-height: 1.8; margin-bottom: 15px; }
+
+    /* Gallery */
+    .gallery { padding: 100px 0; background: #1a1a1a; }
+    .gallery .section-title { color: #fff; }
+    .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .gallery-grid img { width: 100%; height: 250px; object-fit: cover; border-radius: 4px; transition: transform 0.3s; }
+    .gallery-grid img:hover { transform: scale(1.05); }
+
+    /* Testimonials */
+    .testimonials { padding: 100px 0; background: var(--secondary); }
+    .testimonial-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+    .testimonial-card { background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 15px rgba(0,0,0,0.08); }
+    .testimonial-card p { font-style: italic; line-height: 1.6; margin-bottom: 15px; }
+    .testimonial-card .author { font-weight: bold; color: var(--primary); }
+
+    /* Reservations */
+    .reservations { padding: 100px 0; text-align: center; }
+    .reservations h2 { font-size: 2.5rem; color: var(--primary); margin-bottom: 20px; }
+    .reservations p { font-size: 1.2rem; margin-bottom: 30px; }
+
+    /* Contact */
+    .contact { padding: 80px 0; background: #1a1a1a; color: #fff; }
+    .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 40px; }
+    .contact h3 { color: var(--accent); margin-bottom: 15px; }
+    .contact p { line-height: 1.8; }
+
+    /* Footer */
+    footer { background: #111; color: #999; padding: 30px 0; text-align: center; }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      nav ul { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <div class="container">
+      <a href="#" class="logo">{{businessName}}</a>
+      <ul>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#reservations">Reservations</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>{{heroTitle}}</h1>
+      <p>{{heroSubtitle}}</p>
+      <a href="#reservations" class="btn">Reserve a Table</a>
+    </div>
+  </section>
+
+  <section class="menu" id="menu">
+    <div class="container">
+      <h2 class="section-title">Our Menu</h2>
+      <div class="menu-grid">
+        <div class="menu-category">
+          <h3>Starters</h3>
+          <div class="menu-item"><span class="menu-item-name">Bruschetta al Pomodoro</span><span class="menu-item-price">$12</span></div>
+          <div class="menu-item"><span class="menu-item-name">Carpaccio di Manzo</span><span class="menu-item-price">$16</span></div>
+          <div class="menu-item"><span class="menu-item-name">Calamari Fritti</span><span class="menu-item-price">$14</span></div>
+          <div class="menu-item"><span class="menu-item-name">Burrata with Prosciutto</span><span class="menu-item-price">$18</span></div>
+        </div>
+        <div class="menu-category">
+          <h3>Main Courses</h3>
+          <div class="menu-item"><span class="menu-item-name">Osso Buco alla Milanese</span><span class="menu-item-price">$38</span></div>
+          <div class="menu-item"><span class="menu-item-name">Risotto ai Funghi Porcini</span><span class="menu-item-price">$28</span></div>
+          <div class="menu-item"><span class="menu-item-name">Branzino al Forno</span><span class="menu-item-price">$34</span></div>
+          <div class="menu-item"><span class="menu-item-name">Filetto di Manzo</span><span class="menu-item-price">$42</span></div>
+        </div>
+        <div class="menu-category">
+          <h3>Desserts</h3>
+          <div class="menu-item"><span class="menu-item-name">Tiramisu Classico</span><span class="menu-item-price">$12</span></div>
+          <div class="menu-item"><span class="menu-item-name">Panna Cotta</span><span class="menu-item-price">$10</span></div>
+          <div class="menu-item"><span class="menu-item-name">Cannoli Siciliani</span><span class="menu-item-price">$11</span></div>
+          <div class="menu-item"><span class="menu-item-name">Affogato al Caffè</span><span class="menu-item-price">$9</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Restaurant Interior">
+        <div>
+          <h2>Our Story</h2>
+          <p>{{aboutText}}</p>
+          <p>Every dish is crafted with passion using the finest locally-sourced ingredients and time-honored techniques passed down through generations.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <h2 class="section-title">Gallery</h2>
+      <div class="gallery-grid">
+        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=80" alt="Dish 1">
+        <img src="https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=80" alt="Dish 2">
+        <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" alt="Dish 3">
+        <img src="https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=80" alt="Dish 4">
+        <img src="https://images.unsplash.com/photo-1482049016gy-b62616788034?w=400&q=80" alt="Dish 5">
+        <img src="https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=400&q=80" alt="Dish 6">
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials" id="testimonials">
+    <div class="container">
+      <h2 class="section-title">What Our Guests Say</h2>
+      <div class="testimonial-grid">
+        <div class="testimonial-card">
+          <p>"An unforgettable dining experience. The flavors, the ambiance, the service - everything was absolutely perfect."</p>
+          <span class="author">— Maria S.</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"The best Italian food outside of Italy. We come here every anniversary and it never disappoints."</p>
+          <span class="author">— James & Linda R.</span>
+        </div>
+        <div class="testimonial-card">
+          <p>"From the moment you walk in, you know you're in for something special. A true gem in the city."</p>
+          <span class="author">— David K.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="reservations" id="reservations">
+    <div class="container">
+      <h2>Make a Reservation</h2>
+      <p>Join us for an unforgettable dining experience</p>
+      <a href="tel:{{phone}}" class="btn">Call {{phone}}</a>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div>
+          <h3>Location</h3>
+          <p>{{address}}</p>
+        </div>
+        <div>
+          <h3>Hours</h3>
+          <p>Monday - Thursday: 5:00 PM - 10:00 PM<br>
+          Friday - Saturday: 5:00 PM - 11:00 PM<br>
+          Sunday: 4:00 PM - 9:00 PM</p>
+        </div>
+        <div>
+          <h3>Contact</h3>
+          <p>Phone: {{phone}}<br>Email: {{email}}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>&copy; 2024 {{businessName}}. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>

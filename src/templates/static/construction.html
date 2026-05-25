@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Construction</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', 'Helvetica Neue', sans-serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #D46B08;
+            --secondary: #FFF7E6;
+            --accent: #FFA940;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(212, 107, 8, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.5rem; font-weight: 900; text-decoration: none; text-transform: uppercase; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; font-weight: 600; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 900; text-transform: uppercase; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 650px; }
+        .btn-primary {
+            background: var(--primary); color: #fff; padding: 15px 40px;
+            border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; font-weight: 700; text-transform: uppercase;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(212, 107, 8, 0.4); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; font-weight: 800; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
+
+        /* Services */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; max-width: 1200px; margin: 0 auto;
+        }
+        .service-card {
+            background: #fff; padding: 35px; border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08); transition: transform 0.3s;
+            border-top: 4px solid var(--accent);
+        }
+        .service-card:hover { transform: translateY(-5px); }
+        .service-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .service-card h3 { color: var(--primary); margin-bottom: 10px; }
+        .service-card p { color: #666; }
+
+        /* Projects */
+        .projects-section { background: var(--secondary); }
+        .projects-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .project-card { border-radius: 8px; overflow: hidden; box-shadow: 0 5px 20px rgba(0,0,0,0.1); }
+        .project-card img { width: 100%; height: 250px; object-fit: cover; }
+        .project-card .info { padding: 20px; background: #fff; }
+        .project-card h3 { color: var(--primary); margin-bottom: 5px; }
+        .project-card .category { color: var(--accent); font-size: 0.85rem; font-weight: 600; text-transform: uppercase; margin-bottom: 8px; }
+        .project-card p { color: #666; font-size: 0.9rem; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .about-grid img { width: 100%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .about-content h2 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .about-content p { color: #555; margin-bottom: 15px; }
+        .stats-row { display: flex; gap: 30px; margin-top: 25px; flex-wrap: wrap; }
+        .stat { text-align: center; }
+        .stat .number { font-size: 2.2rem; color: var(--primary); font-weight: 900; }
+        .stat .label { font-size: 0.85rem; color: #888; }
+
+        /* Team */
+        .team-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1100px; margin: 0 auto;
+        }
+        .team-card { text-align: center; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 3px 15px rgba(0,0,0,0.05); }
+        .team-card img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 4px solid var(--accent); }
+        .team-card h3 { color: var(--primary); }
+        .team-card .role { color: var(--accent); font-size: 0.9rem; font-weight: 600; }
+
+        /* Safety */
+        .safety-section { background: var(--primary); color: #fff; }
+        .safety-section .section-title { color: #fff; }
+        .safety-section .section-subtitle { color: rgba(255,255,255,0.7); }
+        .safety-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px; max-width: 1000px; margin: 0 auto;
+        }
+        .safety-card { text-align: center; padding: 25px; border: 1px solid rgba(255,169,64,0.3); border-radius: 8px; }
+        .safety-card .icon { font-size: 2.5rem; margin-bottom: 10px; }
+        .safety-card h3 { margin-bottom: 8px; color: var(--accent); }
+        .safety-card p { color: rgba(255,255,255,0.7); font-size: 0.9rem; }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 8px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-left: 4px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+
+        /* Footer */
+        footer { background: #1a1a1a; color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#safety">Safety</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#contact" class="btn-primary">Get Free Estimate</a>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Full-spectrum construction services from concept to completion</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">&#127968;</div>
+                <h3>Residential Construction</h3>
+                <p>Custom homes, renovations, and additions built to the highest standards of quality and craftsmanship.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#127970;</div>
+                <h3>Commercial Building</h3>
+                <p>Office buildings, retail spaces, and industrial facilities delivered on time and within budget.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128736;</div>
+                <h3>Renovations & Remodeling</h3>
+                <p>Transform existing spaces with modern designs while maintaining structural integrity.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#127959;</div>
+                <h3>Infrastructure</h3>
+                <p>Roads, bridges, and public works projects built to serve communities for generations.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128208;</div>
+                <h3>Project Management</h3>
+                <p>Expert oversight from planning through completion, ensuring every detail meets specifications.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128295;</div>
+                <h3>Maintenance Services</h3>
+                <p>Ongoing building maintenance, repairs, and preventive care to protect your investment.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="projects-section">
+        <h2 class="section-title">Featured Projects</h2>
+        <p class="section-subtitle">A showcase of our finest work across diverse sectors</p>
+        <div class="projects-grid">
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=600&q=80" alt="Office Tower">
+                <div class="info">
+                    <div class="category">Commercial</div>
+                    <h3>Meridian Office Tower</h3>
+                    <p>32-story Class A office building in the downtown business district. Completed in 18 months.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&q=80" alt="Luxury Homes">
+                <div class="info">
+                    <div class="category">Residential</div>
+                    <h3>Parkview Estates</h3>
+                    <p>42-unit luxury residential community featuring sustainable design and premium finishes.</p>
+                </div>
+            </div>
+            <div class="project-card">
+                <img src="https://images.unsplash.com/photo-1590674899484-d5640e854abe?w=600&q=80" alt="Bridge">
+                <div class="info">
+                    <div class="category">Infrastructure</div>
+                    <h3>Harbor Bridge Restoration</h3>
+                    <p>Complete structural restoration of a historic bridge serving 50,000 daily commuters.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=600&q=80" alt="Construction Team">
+            <div class="about-content">
+                <h2>About {{businessName}}</h2>
+                <p>{{aboutText}}</p>
+                <p>For over 25 years, we've been building landmarks, homes, and infrastructure that stand the test of time. Our commitment to quality, safety, and innovation drives every project we undertake.</p>
+                <div class="stats-row">
+                    <div class="stat">
+                        <div class="number">500+</div>
+                        <div class="label">Projects Completed</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number">25+</div>
+                        <div class="label">Years Experience</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number">150+</div>
+                        <div class="label">Team Members</div>
+                    </div>
+                    <div class="stat">
+                        <div class="number">0</div>
+                        <div class="label">Safety Incidents</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" style="background: var(--secondary);">
+        <h2 class="section-title">Our Leadership</h2>
+        <p class="section-subtitle">Experienced professionals leading every project to success</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=300&q=80" alt="CEO">
+                <h3>Robert Mitchell</h3>
+                <div class="role">CEO & Founder</div>
+                <p style="color:#666; margin-top:8px; font-size:0.9rem;">30 years in commercial construction</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80" alt="VP Operations">
+                <h3>James Martinez</h3>
+                <div class="role">VP of Operations</div>
+                <p style="color:#666; margin-top:8px; font-size:0.9rem;">PE licensed, 20 years experience</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80" alt="Project Manager">
+                <h3>Angela Thompson</h3>
+                <div class="role">Director of Engineering</div>
+                <p style="color:#666; margin-top:8px; font-size:0.9rem;">LEED certified, bridge specialist</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80" alt="Safety Director">
+                <h3>Kevin O'Brien</h3>
+                <div class="role">Safety Director</div>
+                <p style="color:#666; margin-top:8px; font-size:0.9rem;">OSHA certified, zero-incident record</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Safety -->
+    <section id="safety" class="safety-section">
+        <h2 class="section-title">Safety First</h2>
+        <p class="section-subtitle">Our unwavering commitment to the safety of our team and community</p>
+        <div class="safety-grid">
+            <div class="safety-card">
+                <div class="icon">&#9888;</div>
+                <h3>OSHA Compliant</h3>
+                <p>Full compliance with all OSHA regulations and industry safety standards.</p>
+            </div>
+            <div class="safety-card">
+                <div class="icon">&#128218;</div>
+                <h3>Ongoing Training</h3>
+                <p>Regular safety training and certification for all crew members.</p>
+            </div>
+            <div class="safety-card">
+                <div class="icon">&#127942;</div>
+                <h3>Zero Incidents</h3>
+                <p>Proud record of zero lost-time incidents over the past 5 years.</p>
+            </div>
+            <div class="safety-card">
+                <div class="icon">&#128736;</div>
+                <h3>Modern Equipment</h3>
+                <p>State-of-the-art safety equipment and regular maintenance protocols.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" style="background: var(--secondary);">
+        <h2 class="section-title">Client Testimonials</h2>
+        <p class="section-subtitle">What our clients say about working with us</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"They delivered our office building two weeks ahead of schedule and under budget. The quality of workmanship is outstanding. We've already contracted them for our next project."</div>
+                <div class="author">William Hayes</div>
+                <div class="role">CEO, Hayes Development Corp</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Our dream home became reality thanks to their incredible team. They listened to every detail and brought our vision to life with craftsmanship we didn't think was possible."</div>
+                <div class="author">Linda & Thomas Garcia</div>
+                <div class="role">Custom Home Clients</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Their safety record speaks volumes about how they run their operation. Professional, reliable, and always transparent about timelines and costs. Highly recommend."</div>
+                <div class="author">City of Riverside</div>
+                <div class="role">Municipal Infrastructure Project</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title">Get a Free Estimate</h2>
+        <p class="section-subtitle">Tell us about your project and we'll provide a detailed proposal</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Office</strong><br>{{address}}</div>
+                </div>
+                <p style="margin-top:15px; color:#666; font-size:0.9rem;"><strong>Office Hours:</strong><br>Mon-Fri: 7am - 5pm<br>Sat: 8am - 12pm (by appointment)</p>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Email Address">
+                <input type="tel" placeholder="Phone Number">
+                <select><option>Project Type</option><option>Residential Construction</option><option>Commercial Building</option><option>Renovation</option><option>Infrastructure</option><option>Other</option></select>
+                <textarea placeholder="Describe your project (size, timeline, budget range)"></textarea>
+                <button class="btn-primary" style="width:100%;">Request Free Estimate</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | Licensed & Insured | <a href="#contact">Get Estimate</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

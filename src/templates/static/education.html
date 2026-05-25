@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Education</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, sans-serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #1D39C4;
+            --secondary: #F0F5FF;
+            --accent: #597EF7;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(29, 57, 196, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(29, 57, 196, 0.7), rgba(29, 57, 196, 0.7)),
+                url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; max-width: 600px; }
+        .btn-primary {
+            background: var(--accent); color: #fff; padding: 15px 40px;
+            border: none; border-radius: 5px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(89, 126, 247, 0.4); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
+
+        /* Programs */
+        .programs-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .program-card {
+            background: #fff; border-radius: 10px; overflow: hidden;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.08); transition: transform 0.3s;
+            border-top: 4px solid var(--accent);
+        }
+        .program-card:hover { transform: translateY(-5px); }
+        .program-card img { width: 100%; height: 180px; object-fit: cover; }
+        .program-card .content { padding: 25px; }
+        .program-card h3 { color: var(--primary); margin-bottom: 10px; }
+        .program-card .duration { color: var(--accent); font-size: 0.85rem; font-weight: bold; margin-bottom: 8px; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; align-items: center; max-width: 1200px; margin: 0 auto; }
+        .about-grid img { width: 100%; border-radius: 10px; }
+        .about-content h2 { color: var(--primary); font-size: 2rem; margin-bottom: 20px; }
+        .about-content p { color: #555; margin-bottom: 15px; }
+        .highlight-box { background: var(--secondary); padding: 20px; border-radius: 8px; margin-top: 20px; border-left: 4px solid var(--accent); }
+
+        /* Faculty */
+        .faculty-section { background: var(--secondary); }
+        .faculty-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .faculty-card { text-align: center; background: #fff; padding: 30px; border-radius: 10px; }
+        .faculty-card img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; }
+        .faculty-card h3 { color: var(--primary); font-size: 1.1rem; }
+        .faculty-card .dept { color: var(--accent); font-size: 0.85rem; margin-bottom: 8px; }
+
+        /* Campus */
+        .campus-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px; max-width: 1200px; margin: 0 auto;
+        }
+        .campus-card { position: relative; border-radius: 10px; overflow: hidden; height: 250px; }
+        .campus-card img { width: 100%; height: 100%; object-fit: cover; }
+        .campus-card .overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(transparent, rgba(29,57,196,0.8)); padding: 20px; color: #fff; }
+
+        /* Testimonials */
+        .testimonials-section { background: var(--secondary); }
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-left: 4px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Admissions */
+        .admissions-steps {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .step { text-align: center; position: relative; }
+        .step .number { width: 50px; height: 50px; background: var(--accent); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; margin: 0 auto 15px; }
+        .step h3 { color: var(--primary); margin-bottom: 8px; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 5px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#faculty">Faculty</a></li>
+            <li><a href="#campus">Campus</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#admissions">Admissions</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#admissions" class="btn-primary">Apply Now</a>
+        </div>
+    </section>
+
+    <!-- Programs Section -->
+    <section id="programs">
+        <h2 class="section-title">Our Programs</h2>
+        <p class="section-subtitle">Explore our diverse range of academic programs designed for tomorrow's leaders</p>
+        <div class="programs-grid">
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=600&q=80" alt="Business Program">
+                <div class="content">
+                    <div class="duration">4-Year Program</div>
+                    <h3>Business Administration</h3>
+                    <p>Develop leadership and strategic thinking skills for the modern business world.</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=600&q=80" alt="Computer Science">
+                <div class="content">
+                    <div class="duration">4-Year Program</div>
+                    <h3>Computer Science</h3>
+                    <p>Master cutting-edge technologies and build the software solutions of tomorrow.</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1532094349884-543bc11b234d?w=600&q=80" alt="Sciences">
+                <div class="content">
+                    <div class="duration">4-Year Program</div>
+                    <h3>Natural Sciences</h3>
+                    <p>Explore the fundamental principles that govern our natural world through research.</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&q=80" alt="Liberal Arts">
+                <div class="content">
+                    <div class="duration">4-Year Program</div>
+                    <h3>Liberal Arts</h3>
+                    <p>Cultivate critical thinking and creativity through a broad interdisciplinary education.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" style="background: var(--secondary);">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1541339907198-e08756dedf3f?w=600&q=80" alt="Campus Life">
+            <div class="about-content">
+                <h2>About {{businessName}}</h2>
+                <p>{{aboutText}}</p>
+                <p>Our institution has been shaping minds and nurturing talent for over five decades, producing graduates who lead in their respective fields across the globe.</p>
+                <div class="highlight-box">
+                    <strong>By the Numbers:</strong> 50+ years of excellence, 15,000+ alumni worldwide, 200+ faculty members, 95% graduate employment rate.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Section -->
+    <section id="faculty" class="faculty-section">
+        <h2 class="section-title">Distinguished Faculty</h2>
+        <p class="section-subtitle">Learn from world-class educators and researchers</p>
+        <div class="faculty-grid">
+            <div class="faculty-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80" alt="Professor">
+                <h3>Dr. James Morrison</h3>
+                <div class="dept">Department of Business</div>
+                <p>Ph.D. Harvard University</p>
+            </div>
+            <div class="faculty-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80" alt="Professor">
+                <h3>Dr. Elena Rodriguez</h3>
+                <div class="dept">Department of Sciences</div>
+                <p>Ph.D. MIT</p>
+            </div>
+            <div class="faculty-card">
+                <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=300&q=80" alt="Professor">
+                <h3>Dr. William Park</h3>
+                <div class="dept">Computer Science</div>
+                <p>Ph.D. Stanford University</p>
+            </div>
+            <div class="faculty-card">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&q=80" alt="Professor">
+                <h3>Dr. Amara Johnson</h3>
+                <div class="dept">Liberal Arts</div>
+                <p>Ph.D. Yale University</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Campus Section -->
+    <section id="campus">
+        <h2 class="section-title">Our Campus</h2>
+        <p class="section-subtitle">A vibrant community designed for learning and growth</p>
+        <div class="campus-grid">
+            <div class="campus-card">
+                <img src="https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=80" alt="Library">
+                <div class="overlay"><h3>Modern Library</h3><p>State-of-the-art research facilities</p></div>
+            </div>
+            <div class="campus-card">
+                <img src="https://images.unsplash.com/photo-1567168544230-6b0cf76ae0fb?w=600&q=80" alt="Labs">
+                <div class="overlay"><h3>Science Labs</h3><p>Cutting-edge research laboratories</p></div>
+            </div>
+            <div class="campus-card">
+                <img src="https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=600&q=80" alt="Athletics">
+                <div class="overlay"><h3>Athletics Center</h3><p>World-class sports facilities</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials-section">
+        <h2 class="section-title">Student Voices</h2>
+        <p class="section-subtitle">Hear from our students and alumni</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"The professors here genuinely care about your success. The small class sizes meant I always had the support I needed to excel."</div>
+                <div class="author">Amanda Collins</div>
+                <div class="role">Class of 2023, Business Administration</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The research opportunities available here as an undergraduate are unmatched. I published my first paper before graduating."</div>
+                <div class="author">Marcus Yang</div>
+                <div class="role">Class of 2022, Natural Sciences</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The career services team helped me land my dream job at a top tech company before I even finished my final semester."</div>
+                <div class="author">Priya Sharma</div>
+                <div class="role">Class of 2023, Computer Science</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admissions Section -->
+    <section id="admissions" style="background: var(--secondary);">
+        <h2 class="section-title">Admissions Process</h2>
+        <p class="section-subtitle">Your journey to academic excellence starts here</p>
+        <div class="admissions-steps">
+            <div class="step">
+                <div class="number">1</div>
+                <h3>Apply Online</h3>
+                <p>Complete our simple online application form with your details.</p>
+            </div>
+            <div class="step">
+                <div class="number">2</div>
+                <h3>Submit Documents</h3>
+                <p>Upload transcripts, recommendations, and personal statement.</p>
+            </div>
+            <div class="step">
+                <div class="number">3</div>
+                <h3>Interview</h3>
+                <p>Meet with our admissions team for a personal interview.</p>
+            </div>
+            <div class="step">
+                <div class="number">4</div>
+                <h3>Enrollment</h3>
+                <p>Receive your acceptance and complete enrollment.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact">
+        <h2 class="section-title">Contact Admissions</h2>
+        <p class="section-subtitle">Have questions? Our admissions team is here to help.</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Campus</strong><br>{{address}}</div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Full Name">
+                <input type="email" placeholder="Email Address">
+                <select><option>Select Program of Interest</option><option>Business Administration</option><option>Computer Science</option><option>Natural Sciences</option><option>Liberal Arts</option></select>
+                <textarea placeholder="Your Questions"></textarea>
+                <button class="btn-primary" style="width:100%;">Request Information</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#admissions">Apply Now</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
