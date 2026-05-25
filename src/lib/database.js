@@ -240,6 +240,43 @@ function getStats() {
   };
 }
 
+// ============ LEADS ============
+function createLead(data) {
+  const lead = {
+    id: `lead_${db.nextId.billing++}`,
+    siteId: data.siteId,
+    name: data.name,
+    email: data.email,
+    phone: data.phone || '',
+    message: data.message || '',
+    businessName: data.businessName || '',
+    industry: data.industry || '',
+    source: data.source || '',
+    status: 'new', // new, contacted, converted, spam
+    extra: data.extra || {},
+    createdAt: new Date().toISOString(),
+  };
+  db.leads = db.leads || [];
+  db.leads.push(lead);
+  return lead;
+}
+
+function getLeads() {
+  return db.leads || [];
+}
+
+function getLeadsBySite(siteId) {
+  return (db.leads || []).filter(l => l.siteId === siteId);
+}
+
+function updateLead(id, data) {
+  db.leads = db.leads || [];
+  const idx = db.leads.findIndex(l => l.id === id);
+  if (idx === -1) return null;
+  db.leads[idx] = { ...db.leads[idx], ...data };
+  return db.leads[idx];
+}
+
 // ============ SEED DATA (for demo) ============
 function seedDatabase() {
   if (db.customers.length > 0) return; // Already seeded
@@ -286,6 +323,8 @@ module.exports = {
   createDeployment, getDeployments, getDeployment, updateDeployment, takeDownDeployment,
   // Billing
   createBillingRecord, getBillingRecords, getBillingByCustomer, updateBillingRecord, markAsPaid,
+  // Leads
+  createLead, getLeads, getLeadsBySite, updateLead,
   // Settings & Stats
   getSettings, updateSettings, getStats,
   // Utils
