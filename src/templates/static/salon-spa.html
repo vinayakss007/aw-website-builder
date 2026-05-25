@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Salon & Spa</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Georgia', serif; color: #333; line-height: 1.7; }
+        :root {
+            --primary: #9E1068;
+            --secondary: #FFF0F6;
+            --accent: #F759AB;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(158, 16, 104, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.4rem; font-weight: 400; text-decoration: none; font-style: italic; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(158, 16, 104, 0.6), rgba(158, 16, 104, 0.6)),
+                url('https://images.unsplash.com/photo-1560066984-138dadb4c035?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-style: italic; font-weight: 400; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; }
+        .btn-primary {
+            background: var(--accent); color: #fff; padding: 15px 40px;
+            border: none; border-radius: 30px; font-size: 1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; font-weight: 500;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(247, 89, 171, 0.4); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; font-style: italic; }
+        .section-subtitle { text-align: center; color: #888; margin-bottom: 50px; font-size: 1.05rem; }
+
+        /* Services */
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px; max-width: 1200px; margin: 0 auto;
+        }
+        .service-card {
+            background: #fff; padding: 35px; border-radius: 15px; text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: transform 0.3s;
+            border: 1px solid #fde8f0;
+        }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(158,16,104,0.1); }
+        .service-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .service-card h3 { color: var(--primary); margin-bottom: 10px; }
+        .service-card p { color: #666; font-size: 0.95rem; }
+        .service-card .price { color: var(--accent); font-weight: bold; margin-top: 10px; font-size: 1.1rem; }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 10px; max-width: 1200px; margin: 0 auto;
+        }
+        .gallery-item { border-radius: 10px; overflow: hidden; height: 280px; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .gallery-item:hover img { transform: scale(1.05); }
+
+        /* Team */
+        .team-section { background: var(--secondary); }
+        .team-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .team-card { text-align: center; }
+        .team-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 4px solid var(--accent); }
+        .team-card h3 { color: var(--primary); }
+        .team-card .role { color: var(--accent); font-size: 0.9rem; margin-bottom: 5px; }
+        .team-card p { color: #666; font-size: 0.85rem; }
+
+        /* Pricing Menu */
+        .pricing-section { background: var(--secondary); }
+        .pricing-menu { max-width: 800px; margin: 0 auto; }
+        .pricing-category { margin-bottom: 35px; }
+        .pricing-category h3 { color: var(--primary); font-size: 1.3rem; margin-bottom: 15px; padding-bottom: 8px; border-bottom: 2px solid var(--accent); }
+        .pricing-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dotted #ddd; }
+        .pricing-item .name { color: #333; }
+        .pricing-item .desc { color: #888; font-size: 0.85rem; }
+        .pricing-item .cost { color: var(--primary); font-weight: bold; white-space: nowrap; }
+
+        /* Booking */
+        .booking-section { background: linear-gradient(135deg, var(--primary), var(--accent)); text-align: center; color: #fff; }
+        .booking-section h2 { color: #fff; font-size: 2.2rem; margin-bottom: 15px; font-style: italic; }
+        .booking-section p { margin-bottom: 25px; opacity: 0.9; }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-top: 3px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent); }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #eee; border-radius: 10px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#team">Team</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#booking">Booking</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#booking" class="btn-primary">Book Appointment</a>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services">
+        <h2 class="section-title">Our Services</h2>
+        <p class="section-subtitle">Indulge in our premium beauty and wellness treatments</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">&#128135;</div>
+                <h3>Hair Styling</h3>
+                <p>Precision cuts, coloring, highlights, and styling by expert stylists.</p>
+                <div class="price">From $65</div>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128133;</div>
+                <h3>Nail Services</h3>
+                <p>Manicures, pedicures, gel nails, and artistic nail designs.</p>
+                <div class="price">From $35</div>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#10024;</div>
+                <h3>Facial Treatments</h3>
+                <p>Rejuvenating facials, chemical peels, and anti-aging treatments.</p>
+                <div class="price">From $85</div>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#127807;</div>
+                <h3>Massage Therapy</h3>
+                <p>Swedish, deep tissue, hot stone, and aromatherapy massage.</p>
+                <div class="price">From $90</div>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128171;</div>
+                <h3>Body Treatments</h3>
+                <p>Body wraps, scrubs, and detox treatments for total rejuvenation.</p>
+                <div class="price">From $110</div>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128142;</div>
+                <h3>Bridal Packages</h3>
+                <p>Complete bridal prep including hair, makeup, nails, and spa treatments.</p>
+                <div class="price">From $350</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" style="background: var(--secondary);">
+        <h2 class="section-title">Our Space</h2>
+        <p class="section-subtitle">Step into our world of beauty and relaxation</p>
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=600&q=80" alt="Salon Interior">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=600&q=80" alt="Facial Treatment">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1600948836101-f9ffda59d250?w=600&q=80" alt="Nail Art">
+            </div>
+            <div class="gallery-item">
+                <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600&q=80" alt="Massage">
+            </div>
+        </div>
+    </section>
+
+    <!-- Team -->
+    <section id="team" class="team-section">
+        <h2 class="section-title">Our Artists</h2>
+        <p class="section-subtitle">Meet the talented professionals behind your transformation</p>
+        <div class="team-grid">
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1580489944761-15a19d654956?w=300&q=80" alt="Stylist">
+                <h3>Isabella Martinez</h3>
+                <div class="role">Master Stylist</div>
+                <p>15 years experience, trained in Paris</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&q=80" alt="Aesthetician">
+                <h3>Claire Dubois</h3>
+                <div class="role">Lead Aesthetician</div>
+                <p>Certified skincare specialist</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=300&q=80" alt="Nail Tech">
+                <h3>Nina Patel</h3>
+                <div class="role">Nail Artist</div>
+                <p>Award-winning nail designs</p>
+            </div>
+            <div class="team-card">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=300&q=80" alt="Therapist">
+                <h3>Marcus Lee</h3>
+                <div class="role">Massage Therapist</div>
+                <p>Licensed, 10+ years experience</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="pricing-section">
+        <h2 class="section-title">Service Menu</h2>
+        <p class="section-subtitle">Our complete pricing guide</p>
+        <div class="pricing-menu">
+            <div class="pricing-category">
+                <h3>Hair Services</h3>
+                <div class="pricing-item"><div><div class="name">Women's Haircut & Style</div></div><div class="cost">$65 - $95</div></div>
+                <div class="pricing-item"><div><div class="name">Men's Haircut</div></div><div class="cost">$35 - $50</div></div>
+                <div class="pricing-item"><div><div class="name">Full Color</div></div><div class="cost">$120 - $180</div></div>
+                <div class="pricing-item"><div><div class="name">Highlights (Partial)</div></div><div class="cost">$95 - $150</div></div>
+                <div class="pricing-item"><div><div class="name">Highlights (Full)</div></div><div class="cost">$150 - $220</div></div>
+                <div class="pricing-item"><div><div class="name">Blowout & Styling</div></div><div class="cost">$45 - $65</div></div>
+            </div>
+            <div class="pricing-category">
+                <h3>Spa Services</h3>
+                <div class="pricing-item"><div><div class="name">Classic Facial (60 min)</div></div><div class="cost">$85</div></div>
+                <div class="pricing-item"><div><div class="name">Anti-Aging Facial (75 min)</div></div><div class="cost">$125</div></div>
+                <div class="pricing-item"><div><div class="name">Swedish Massage (60 min)</div></div><div class="cost">$90</div></div>
+                <div class="pricing-item"><div><div class="name">Deep Tissue Massage (60 min)</div></div><div class="cost">$110</div></div>
+                <div class="pricing-item"><div><div class="name">Hot Stone Massage (75 min)</div></div><div class="cost">$130</div></div>
+            </div>
+            <div class="pricing-category">
+                <h3>Nail Services</h3>
+                <div class="pricing-item"><div><div class="name">Classic Manicure</div></div><div class="cost">$35</div></div>
+                <div class="pricing-item"><div><div class="name">Gel Manicure</div></div><div class="cost">$50</div></div>
+                <div class="pricing-item"><div><div class="name">Classic Pedicure</div></div><div class="cost">$45</div></div>
+                <div class="pricing-item"><div><div class="name">Luxury Pedicure</div></div><div class="cost">$65</div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="booking" class="booking-section">
+        <h2>Book Your Experience</h2>
+        <p>Reserve your appointment and let us take care of the rest. Walk-ins welcome based on availability.</p>
+        <a href="#contact" class="btn-primary" style="background: #fff; color: var(--primary);">Book Now</a>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <h2 class="section-title">Client Love</h2>
+        <p class="section-subtitle">What our clients say about their experience with us</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"This is my sanctuary. From the moment I walk in, the stress melts away. Isabella is a genius with color - my hair has never looked better."</div>
+                <div class="author">Rachel Anderson</div>
+                <div class="role">Regular Client, 3 years</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Had my bridal package done here and it was absolute perfection. My entire bridal party was pampered and we all looked and felt amazing on the big day."</div>
+                <div class="author">Brittany Collins</div>
+                <div class="role">Bride, March 2023</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The hot stone massage is divine. The ambiance, the skill, the attention to detail - this place is on another level. I come every two weeks."</div>
+                <div class="author">David Kim</div>
+                <div class="role">Spa Member</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" style="background: var(--secondary);">
+        <h2 class="section-title">Visit Us</h2>
+        <p class="section-subtitle">We'd love to welcome you to our space</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Location</strong><br>{{address}}</div>
+                </div>
+                <p style="margin-top:15px; color:#666; font-size:0.9rem;"><strong>Hours:</strong><br>Mon-Fri: 9am - 8pm<br>Sat: 9am - 6pm<br>Sun: 10am - 5pm</p>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Email Address">
+                <input type="tel" placeholder="Phone Number">
+                <select><option>Select Service</option><option>Hair Styling</option><option>Nail Services</option><option>Facial Treatment</option><option>Massage</option><option>Bridal Package</option></select>
+                <textarea placeholder="Any special requests?"></textarea>
+                <button class="btn-primary" style="width:100%;">Request Appointment</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#booking">Book Now</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Technology</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', -apple-system, sans-serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #722ED1;
+            --secondary: #F9F0FF;
+            --accent: #B37FEB;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(114, 46, 209, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.5rem; font-weight: bold; text-decoration: none; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(135deg, rgba(114, 46, 209, 0.85), rgba(179, 127, 235, 0.85)),
+                url('https://images.unsplash.com/photo-1518770660439-4636190af475?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 700; }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; max-width: 650px; opacity: 0.9; }
+        .btn-primary {
+            background: #fff; color: var(--primary); padding: 15px 40px;
+            border: none; border-radius: 30px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(0,0,0,0.2); }
+        .btn-secondary {
+            background: transparent; color: #fff; padding: 15px 40px; margin-left: 15px;
+            border: 2px solid #fff; border-radius: 30px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; font-weight: 600; transition: all 0.3s;
+        }
+        .btn-secondary:hover { background: #fff; color: var(--primary); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.2rem; color: var(--primary); margin-bottom: 15px; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; max-width: 600px; margin-left: auto; margin-right: auto; }
+
+        /* Features */
+        .features-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .feature-card {
+            background: #fff; padding: 35px; border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05); transition: transform 0.3s;
+            border: 1px solid #f0e6ff;
+        }
+        .feature-card:hover { transform: translateY(-5px); box-shadow: 0 10px 40px rgba(114,46,209,0.1); }
+        .feature-card .icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .feature-card h3 { color: var(--primary); margin-bottom: 10px; font-size: 1.2rem; }
+        .feature-card p { color: #666; }
+
+        /* How It Works */
+        .how-it-works { background: var(--secondary); }
+        .steps-container { max-width: 800px; margin: 0 auto; }
+        .step-item { display: flex; gap: 25px; margin-bottom: 40px; align-items: flex-start; }
+        .step-number { width: 50px; height: 50px; min-width: 50px; background: var(--primary); color: #fff; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: bold; }
+        .step-content h3 { color: var(--primary); margin-bottom: 5px; }
+        .step-content p { color: #666; }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .pricing-card {
+            background: #fff; border-radius: 15px; padding: 40px 30px; text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.05); border: 2px solid #f0e6ff; transition: transform 0.3s;
+        }
+        .pricing-card:hover { transform: translateY(-5px); }
+        .pricing-card.featured { border-color: var(--primary); position: relative; }
+        .pricing-card.featured::after { content: 'RECOMMENDED'; position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--primary); color: #fff; padding: 4px 20px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        .pricing-card .plan-name { color: var(--primary); font-weight: 600; font-size: 1.1rem; margin-bottom: 15px; }
+        .pricing-card .price { font-size: 2.8rem; font-weight: 700; color: var(--primary); }
+        .pricing-card .price span { font-size: 1rem; color: #888; }
+        .pricing-card .features { list-style: none; margin: 25px 0; text-align: left; }
+        .pricing-card .features li { padding: 10px 0; border-bottom: 1px solid #f5f5f5; color: #555; }
+        .pricing-btn { display: block; padding: 12px; background: var(--primary); color: #fff; border: none; border-radius: 30px; font-size: 1rem; cursor: pointer; text-decoration: none; font-weight: 600; transition: background 0.3s; }
+        .pricing-btn:hover { background: #531dab; }
+
+        /* Integrations */
+        .integrations-section { background: var(--secondary); }
+        .integrations-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 20px; max-width: 900px; margin: 0 auto;
+        }
+        .integration-item { background: #fff; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .integration-item .icon { font-size: 2rem; margin-bottom: 8px; }
+        .integration-item span { display: block; font-size: 0.85rem; color: #666; font-weight: 500; }
+
+        /* Testimonials */
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 15px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border: 1px solid #f0e6ff;
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* CTA */
+        .cta-section { background: linear-gradient(135deg, var(--primary), var(--accent)); text-align: center; color: #fff; padding: 80px 5%; }
+        .cta-section h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .cta-section p { font-size: 1.2rem; margin-bottom: 30px; opacity: 0.9; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--primary); }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 8px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .btn-secondary { margin-left: 0; margin-top: 10px; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .step-item { flex-direction: column; align-items: center; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#integrations">Integrations</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#pricing" class="btn-primary">Start Free Trial</a>
+            <a href="#features" class="btn-secondary">Learn More</a>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section id="features">
+        <h2 class="section-title">Powerful Features</h2>
+        <p class="section-subtitle">Everything you need to accelerate your workflow and scale your business</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="icon">&#9889;</div>
+                <h3>Lightning Fast Performance</h3>
+                <p>Built on cutting-edge infrastructure for sub-second response times and 99.99% uptime guarantee.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128274;</div>
+                <h3>Enterprise Security</h3>
+                <p>Bank-level encryption, SOC 2 compliance, and advanced threat detection to protect your data.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128202;</div>
+                <h3>Advanced Analytics</h3>
+                <p>Real-time dashboards and AI-powered insights to make data-driven decisions with confidence.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#127760;</div>
+                <h3>Global CDN</h3>
+                <p>Content delivered from edge servers worldwide for blazing-fast experiences everywhere.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#128640;</div>
+                <h3>Auto-Scaling</h3>
+                <p>Automatically scales resources based on demand. Never worry about traffic spikes again.</p>
+            </div>
+            <div class="feature-card">
+                <div class="icon">&#129302;</div>
+                <h3>AI-Powered Automation</h3>
+                <p>Intelligent workflow automation that learns from your patterns and optimizes processes.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <h2 class="section-title">How It Works</h2>
+        <p class="section-subtitle">Get up and running in minutes, not months</p>
+        <div class="steps-container">
+            <div class="step-item">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <h3>Sign Up & Connect</h3>
+                    <p>Create your account in seconds and connect your existing tools and data sources with our one-click integrations.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <h3>Configure & Customize</h3>
+                    <p>Set up your workspace with our intuitive dashboard. Customize workflows, permissions, and automation rules.</p>
+                </div>
+            </div>
+            <div class="step-item">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <h3>Deploy & Scale</h3>
+                    <p>Launch your solution with one click. Our platform automatically handles scaling, monitoring, and optimization.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing">
+        <h2 class="section-title">Simple, Transparent Pricing</h2>
+        <p class="section-subtitle">No hidden fees. Cancel anytime. Start free.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">Starter</div>
+                <div class="price">$29<span>/month</span></div>
+                <ul class="features">
+                    <li>&#10003; Up to 5 team members</li>
+                    <li>&#10003; 10GB storage</li>
+                    <li>&#10003; Basic analytics</li>
+                    <li>&#10003; Email support</li>
+                    <li>&#10003; API access</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="plan-name">Professional</div>
+                <div class="price">$79<span>/month</span></div>
+                <ul class="features">
+                    <li>&#10003; Up to 25 team members</li>
+                    <li>&#10003; 100GB storage</li>
+                    <li>&#10003; Advanced analytics & AI</li>
+                    <li>&#10003; Priority support</li>
+                    <li>&#10003; Custom integrations</li>
+                    <li>&#10003; SSO authentication</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="price">Custom</div>
+                <ul class="features">
+                    <li>&#10003; Unlimited team members</li>
+                    <li>&#10003; Unlimited storage</li>
+                    <li>&#10003; White-label solution</li>
+                    <li>&#10003; Dedicated account manager</li>
+                    <li>&#10003; Custom SLA</li>
+                    <li>&#10003; On-premise deployment</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Contact Sales</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Integrations -->
+    <section id="integrations" class="integrations-section">
+        <h2 class="section-title">Seamless Integrations</h2>
+        <p class="section-subtitle">Connect with the tools you already use and love</p>
+        <div class="integrations-grid">
+            <div class="integration-item"><div class="icon">&#128172;</div><span>Slack</span></div>
+            <div class="integration-item"><div class="icon">&#128195;</div><span>Google Workspace</span></div>
+            <div class="integration-item"><div class="icon">&#128187;</div><span>GitHub</span></div>
+            <div class="integration-item"><div class="icon">&#9729;</div><span>AWS</span></div>
+            <div class="integration-item"><div class="icon">&#128202;</div><span>Salesforce</span></div>
+            <div class="integration-item"><div class="icon">&#128230;</div><span>Dropbox</span></div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials">
+        <h2 class="section-title">Trusted by Industry Leaders</h2>
+        <p class="section-subtitle">See why thousands of companies choose our platform</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"This platform reduced our deployment time by 80%. It's the single best investment we've made in our tech stack this year."</div>
+                <div class="author">Alex Rivera</div>
+                <div class="role">CTO, TechCorp Inc.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The AI-powered analytics have given us insights we never had before. Our team productivity increased by 3x in the first quarter."</div>
+                <div class="author">Sarah Chen</div>
+                <div class="role">VP Engineering, DataFlow</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Enterprise-grade security with startup-level ease of use. We migrated our entire infrastructure in under a week."</div>
+                <div class="author">Michael Park</div>
+                <div class="role">CEO, CloudScale Solutions</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <h2>Ready to Transform Your Workflow?</h2>
+        <p>Join 10,000+ teams already building the future with us.</p>
+        <a href="#contact" class="btn-primary">Start Your Free Trial</a>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Ready to see our platform in action? Let's talk.</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Office</strong><br>{{address}}</div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Work Email">
+                <select><option>Company Size</option><option>1-10</option><option>11-50</option><option>51-200</option><option>200+</option></select>
+                <textarea placeholder="Tell us about your needs"></textarea>
+                <button class="pricing-btn" style="width:100%;">Request Demo</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#features">Features</a> | <a href="#pricing">Pricing</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

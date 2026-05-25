@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Fitness</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Arial', sans-serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #000000;
+            --secondary: #F5F5F5;
+            --accent: #FF4D4F;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(0, 0, 0, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.5rem; font-weight: 900; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.9rem; text-transform: uppercase; font-weight: 600; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 4rem; margin-bottom: 20px; text-transform: uppercase; font-weight: 900; letter-spacing: 3px; }
+        .hero p { font-size: 1.3rem; margin-bottom: 30px; max-width: 600px; }
+        .btn-primary {
+            background: var(--accent); color: #fff; padding: 15px 40px;
+            border: none; border-radius: 3px; font-size: 1.1rem; cursor: pointer;
+            text-decoration: none; display: inline-block; text-transform: uppercase; font-weight: 700;
+            letter-spacing: 1px; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 20px rgba(255, 77, 79, 0.4); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2.5rem; color: var(--primary); margin-bottom: 15px; text-transform: uppercase; font-weight: 900; }
+        .section-subtitle { text-align: center; color: #666; margin-bottom: 50px; font-size: 1.1rem; }
+
+        /* Programs */
+        .programs-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .program-card {
+            position: relative; border-radius: 10px; overflow: hidden; height: 350px;
+            cursor: pointer;
+        }
+        .program-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .program-card:hover img { transform: scale(1.05); }
+        .program-card .overlay {
+            position: absolute; bottom: 0; left: 0; right: 0;
+            background: linear-gradient(transparent, rgba(0,0,0,0.9));
+            padding: 30px; color: #fff;
+        }
+        .program-card .overlay h3 { font-size: 1.3rem; text-transform: uppercase; margin-bottom: 5px; }
+        .program-card .overlay p { font-size: 0.9rem; opacity: 0.8; }
+
+        /* Trainers */
+        .trainers-section { background: var(--primary); color: #fff; }
+        .trainers-section .section-title { color: #fff; }
+        .trainers-section .section-subtitle { color: #aaa; }
+        .trainers-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1100px; margin: 0 auto;
+        }
+        .trainer-card { text-align: center; }
+        .trainer-card img { width: 180px; height: 180px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; border: 3px solid var(--accent); }
+        .trainer-card h3 { color: #fff; margin-bottom: 5px; }
+        .trainer-card .specialty { color: var(--accent); font-size: 0.9rem; text-transform: uppercase; font-weight: 600; }
+
+        /* Schedule */
+        .schedule-table { max-width: 1000px; margin: 0 auto; overflow-x: auto; }
+        .schedule-table table { width: 100%; border-collapse: collapse; }
+        .schedule-table th { background: var(--primary); color: #fff; padding: 15px; text-transform: uppercase; font-size: 0.85rem; }
+        .schedule-table td { padding: 12px 15px; border-bottom: 1px solid #eee; text-align: center; }
+        .schedule-table tr:hover { background: var(--secondary); }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .pricing-card {
+            background: #fff; border-radius: 10px; padding: 40px 30px; text-align: center;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.1); position: relative; overflow: hidden;
+            border: 2px solid #eee; transition: transform 0.3s;
+        }
+        .pricing-card:hover { transform: translateY(-5px); }
+        .pricing-card.featured { border-color: var(--accent); }
+        .pricing-card.featured::before {
+            content: 'POPULAR'; position: absolute; top: 15px; right: -30px; background: var(--accent);
+            color: #fff; padding: 5px 40px; font-size: 0.75rem; font-weight: 700; transform: rotate(45deg);
+        }
+        .pricing-card .plan-name { text-transform: uppercase; font-weight: 700; color: #888; margin-bottom: 10px; }
+        .pricing-card .price { font-size: 3rem; font-weight: 900; color: var(--primary); }
+        .pricing-card .price span { font-size: 1rem; color: #888; }
+        .pricing-card .features { list-style: none; margin: 20px 0; text-align: left; }
+        .pricing-card .features li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; color: #555; }
+
+        /* Testimonials */
+        .testimonials-section { background: var(--secondary); }
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card {
+            background: #fff; padding: 30px; border-radius: 10px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.05); border-top: 4px solid var(--accent);
+        }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: bold; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { width: 40px; height: 40px; background: var(--secondary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .contact-form input, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 3px;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.9rem; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.5rem; }
+            .contact-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#programs">Programs</a></li>
+            <li><a href="#trainers">Trainers</a></li>
+            <li><a href="#schedule">Schedule</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#pricing" class="btn-primary">Join Now</a>
+        </div>
+    </section>
+
+    <!-- Programs -->
+    <section id="programs">
+        <h2 class="section-title">Our Programs</h2>
+        <p class="section-subtitle">Transform your body with our expert-designed fitness programs</p>
+        <div class="programs-grid">
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=600&q=80" alt="Strength Training">
+                <div class="overlay">
+                    <h3>Strength Training</h3>
+                    <p>Build muscle and increase power with guided weight training</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1518611012118-696072aa579a?w=600&q=80" alt="HIIT">
+                <div class="overlay">
+                    <h3>HIIT Classes</h3>
+                    <p>High-intensity interval training for maximum calorie burn</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Yoga">
+                <div class="overlay">
+                    <h3>Yoga & Flexibility</h3>
+                    <p>Find balance and improve mobility with guided yoga sessions</p>
+                </div>
+            </div>
+            <div class="program-card">
+                <img src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=600&q=80" alt="Boxing">
+                <div class="overlay">
+                    <h3>Boxing & Kickboxing</h3>
+                    <p>Unleash your inner fighter while getting an incredible workout</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trainers -->
+    <section id="trainers" class="trainers-section">
+        <h2 class="section-title">Elite Trainers</h2>
+        <p class="section-subtitle">Certified experts dedicated to your transformation</p>
+        <div class="trainers-grid">
+            <div class="trainer-card">
+                <img src="https://images.unsplash.com/photo-1567013127542-490d757e51fc?w=300&q=80" alt="Trainer">
+                <h3>Jake Thompson</h3>
+                <div class="specialty">Strength & Conditioning</div>
+                <p style="color:#aaa; margin-top:8px;">NASM Certified, 8+ years experience</p>
+            </div>
+            <div class="trainer-card">
+                <img src="https://images.unsplash.com/photo-1594381898411-846e7d193883?w=300&q=80" alt="Trainer">
+                <h3>Maya Rodriguez</h3>
+                <div class="specialty">Yoga & Pilates</div>
+                <p style="color:#aaa; margin-top:8px;">RYT-500, Wellness Coach</p>
+            </div>
+            <div class="trainer-card">
+                <img src="https://images.unsplash.com/photo-1583454110551-21f2fa2afe61?w=300&q=80" alt="Trainer">
+                <h3>Marcus Williams</h3>
+                <div class="specialty">HIIT & Boxing</div>
+                <p style="color:#aaa; margin-top:8px;">ACE Certified, Former Pro Athlete</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Schedule -->
+    <section id="schedule" style="background: var(--secondary);">
+        <h2 class="section-title">Class Schedule</h2>
+        <p class="section-subtitle">Find a class that fits your lifestyle</p>
+        <div class="schedule-table">
+            <table>
+                <thead>
+                    <tr><th>Time</th><th>Monday</th><th>Tuesday</th><th>Wednesday</th><th>Thursday</th><th>Friday</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>6:00 AM</td><td>HIIT</td><td>Strength</td><td>HIIT</td><td>Strength</td><td>HIIT</td></tr>
+                    <tr><td>8:00 AM</td><td>Yoga</td><td>Boxing</td><td>Yoga</td><td>Boxing</td><td>Yoga</td></tr>
+                    <tr><td>12:00 PM</td><td>Strength</td><td>HIIT</td><td>Boxing</td><td>HIIT</td><td>Strength</td></tr>
+                    <tr><td>5:00 PM</td><td>Boxing</td><td>Yoga</td><td>Strength</td><td>Yoga</td><td>Boxing</td></tr>
+                    <tr><td>7:00 PM</td><td>HIIT</td><td>Strength</td><td>HIIT</td><td>Strength</td><td>Open Gym</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing">
+        <h2 class="section-title">Membership Plans</h2>
+        <p class="section-subtitle">Invest in yourself. Choose your plan.</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">Basic</div>
+                <div class="price">$29<span>/month</span></div>
+                <ul class="features">
+                    <li>&#10003; Gym floor access</li>
+                    <li>&#10003; Locker room access</li>
+                    <li>&#10003; 2 group classes/week</li>
+                    <li>&#10003; Basic fitness assessment</li>
+                </ul>
+                <a href="#contact" class="btn-primary" style="width:100%;">Get Started</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="plan-name">Pro</div>
+                <div class="price">$59<span>/month</span></div>
+                <ul class="features">
+                    <li>&#10003; Full gym access</li>
+                    <li>&#10003; Unlimited group classes</li>
+                    <li>&#10003; 1 PT session/month</li>
+                    <li>&#10003; Nutrition guidance</li>
+                    <li>&#10003; Sauna & steam room</li>
+                </ul>
+                <a href="#contact" class="btn-primary" style="width:100%;">Get Started</a>
+            </div>
+            <div class="pricing-card">
+                <div class="plan-name">Elite</div>
+                <div class="price">$99<span>/month</span></div>
+                <ul class="features">
+                    <li>&#10003; 24/7 gym access</li>
+                    <li>&#10003; Unlimited everything</li>
+                    <li>&#10003; 4 PT sessions/month</li>
+                    <li>&#10003; Custom meal plans</li>
+                    <li>&#10003; Recovery zone access</li>
+                    <li>&#10003; Guest passes (2/month)</li>
+                </ul>
+                <a href="#contact" class="btn-primary" style="width:100%;">Get Started</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials-section">
+        <h2 class="section-title">Success Stories</h2>
+        <p class="section-subtitle">Real results from real members</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"Lost 40 pounds in 6 months. The trainers here pushed me beyond what I thought possible. This gym changed my life."</div>
+                <div class="author">Chris Martinez</div>
+                <div class="role">Member for 2 years</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The community here is incredible. Everyone motivates each other. I've never been more consistent with my fitness routine."</div>
+                <div class="author">Sarah Kim</div>
+                <div class="role">Member for 1 year</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"As a busy professional, the flexible class schedule means I never have an excuse to skip. The HIIT classes are addictive!"</div>
+                <div class="author">David Porter</div>
+                <div class="role">Member for 3 years</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Ready to start your fitness journey?</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Location</strong><br>{{address}}</div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Your Email">
+                <input type="text" placeholder="Fitness Goals">
+                <textarea placeholder="Your Message"></textarea>
+                <button class="btn-primary" style="width:100%;">Start Free Trial</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#pricing">Join Today</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{businessName}} - Photography</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; color: #333; line-height: 1.6; }
+        :root {
+            --primary: #262626;
+            --secondary: #FFFFFF;
+            --accent: #EB2F96;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            background: rgba(38, 38, 38, 0.95); backdrop-filter: blur(10px);
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+        }
+        .navbar .logo { color: #fff; font-size: 1.4rem; font-weight: 300; text-decoration: none; letter-spacing: 3px; text-transform: uppercase; }
+        .navbar .nav-links { display: flex; gap: 25px; list-style: none; }
+        .navbar .nav-links a { color: #fff; text-decoration: none; font-size: 0.85rem; letter-spacing: 1px; text-transform: uppercase; font-weight: 300; transition: color 0.3s; }
+        .navbar .nav-links a:hover { color: var(--accent); }
+        .nav-toggle { display: none; background: none; border: none; color: #fff; font-size: 1.5rem; cursor: pointer; }
+
+        /* Hero */
+        .hero {
+            height: 100vh; display: flex; align-items: center; justify-content: center;
+            background: linear-gradient(rgba(38, 38, 38, 0.5), rgba(38, 38, 38, 0.5)),
+                url('https://images.unsplash.com/photo-1452587925148-ce544e77e70d?w=1920&q=80') center/cover no-repeat;
+            text-align: center; color: #fff; padding: 0 20px;
+        }
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 200; letter-spacing: 5px; text-transform: uppercase; }
+        .hero p { font-size: 1.2rem; margin-bottom: 30px; max-width: 600px; font-weight: 300; }
+        .btn-primary {
+            background: transparent; color: #fff; padding: 15px 40px;
+            border: 2px solid var(--accent); border-radius: 0; font-size: 0.9rem; cursor: pointer;
+            text-decoration: none; display: inline-block; letter-spacing: 2px; text-transform: uppercase;
+            transition: all 0.3s;
+        }
+        .btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+
+        /* Sections */
+        section { padding: 80px 5%; }
+        .section-title { text-align: center; font-size: 2rem; color: var(--primary); margin-bottom: 15px; font-weight: 300; letter-spacing: 3px; text-transform: uppercase; }
+        .section-subtitle { text-align: center; color: #888; margin-bottom: 50px; font-size: 1rem; }
+
+        /* Portfolio */
+        .portfolio-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 5px; max-width: 1400px; margin: 0 auto;
+        }
+        .portfolio-item { position: relative; overflow: hidden; height: 350px; cursor: pointer; }
+        .portfolio-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s; }
+        .portfolio-item:hover img { transform: scale(1.05); }
+        .portfolio-item .overlay {
+            position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(235, 47, 150, 0.7); display: flex; align-items: center;
+            justify-content: center; color: #fff; opacity: 0; transition: opacity 0.3s;
+            flex-direction: column;
+        }
+        .portfolio-item:hover .overlay { opacity: 1; }
+        .portfolio-item .overlay h3 { font-weight: 300; letter-spacing: 2px; text-transform: uppercase; }
+        .portfolio-item .overlay p { font-size: 0.85rem; opacity: 0.8; }
+
+        /* Services */
+        .services-section { background: var(--primary); color: #fff; }
+        .services-section .section-title { color: #fff; }
+        .services-section .section-subtitle { color: #aaa; }
+        .services-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px; max-width: 1100px; margin: 0 auto;
+        }
+        .service-card { text-align: center; padding: 30px; border: 1px solid rgba(255,255,255,0.1); }
+        .service-card .icon { font-size: 2rem; margin-bottom: 15px; color: var(--accent); }
+        .service-card h3 { font-weight: 300; letter-spacing: 1px; margin-bottom: 10px; }
+        .service-card p { color: #aaa; font-size: 0.9rem; }
+
+        /* About */
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; max-width: 1100px; margin: 0 auto; }
+        .about-grid img { width: 100%; border-radius: 0; }
+        .about-content h2 { color: var(--primary); font-size: 1.8rem; margin-bottom: 20px; font-weight: 300; letter-spacing: 2px; }
+        .about-content p { color: #666; margin-bottom: 15px; }
+
+        /* Pricing */
+        .pricing-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px; max-width: 1000px; margin: 0 auto;
+        }
+        .pricing-card {
+            border: 1px solid #eee; padding: 40px 30px; text-align: center; transition: all 0.3s;
+        }
+        .pricing-card:hover { border-color: var(--accent); }
+        .pricing-card.featured { border-color: var(--accent); border-width: 2px; }
+        .pricing-card .plan-name { text-transform: uppercase; letter-spacing: 2px; font-weight: 300; color: #888; margin-bottom: 15px; }
+        .pricing-card .price { font-size: 2.5rem; font-weight: 200; color: var(--primary); margin-bottom: 20px; }
+        .pricing-card .features { list-style: none; margin-bottom: 25px; }
+        .pricing-card .features li { padding: 8px 0; border-bottom: 1px solid #f5f5f5; color: #666; font-size: 0.9rem; }
+        .pricing-btn { display: block; padding: 12px; background: var(--primary); color: #fff; border: none; font-size: 0.85rem; cursor: pointer; text-decoration: none; text-transform: uppercase; letter-spacing: 2px; transition: background 0.3s; }
+        .pricing-btn:hover { background: var(--accent); }
+
+        /* Testimonials */
+        .testimonials-section { background: #f9f9f9; }
+        .testimonials-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto;
+        }
+        .testimonial-card { background: #fff; padding: 30px; border-left: 3px solid var(--accent); }
+        .testimonial-card .quote { font-style: italic; color: #555; margin-bottom: 15px; }
+        .testimonial-card .author { font-weight: 600; color: var(--primary); }
+        .testimonial-card .role { font-size: 0.85rem; color: #888; }
+
+        /* Contact */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; max-width: 900px; margin: 0 auto; }
+        .contact-info .info-item { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+        .contact-info .info-item .icon { color: var(--accent); font-size: 1.2rem; }
+        .contact-form input, .contact-form select, .contact-form textarea {
+            width: 100%; padding: 12px 15px; border: 1px solid #ddd; border-radius: 0;
+            margin-bottom: 15px; font-size: 1rem; font-family: inherit;
+        }
+        .contact-form textarea { height: 120px; resize: vertical; }
+        .contact-form input:focus, .contact-form textarea:focus { outline: none; border-color: var(--accent); }
+
+        /* Footer */
+        footer { background: var(--primary); color: #fff; text-align: center; padding: 30px 5%; font-size: 0.85rem; letter-spacing: 1px; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .navbar .nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--primary); flex-direction: column; padding: 20px; }
+            .navbar .nav-links.active { display: flex; }
+            .nav-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
+            .about-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .portfolio-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#" class="logo">{{businessName}}</a>
+        <button class="nav-toggle">&#9776;</button>
+        <ul class="nav-links">
+            <li><a href="#hero">Home</a></li>
+            <li><a href="#portfolio">Portfolio</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#pricing">Pricing</a></li>
+            <li><a href="#testimonials">Testimonials</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section id="hero" class="hero">
+        <div>
+            <h1>{{heroTitle}}</h1>
+            <p>{{heroSubtitle}}</p>
+            <a href="#portfolio" class="btn-primary">View Portfolio</a>
+        </div>
+    </section>
+
+    <!-- Portfolio -->
+    <section id="portfolio">
+        <h2 class="section-title">Portfolio</h2>
+        <p class="section-subtitle">A curated selection of our finest work</p>
+        <div class="portfolio-grid">
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?w=600&q=80" alt="Wedding">
+                <div class="overlay"><h3>Weddings</h3><p>Timeless moments captured</p></div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=600&q=80" alt="Fashion">
+                <div class="overlay"><h3>Fashion</h3><p>Editorial & commercial</p></div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=600&q=80" alt="Portrait">
+                <div class="overlay"><h3>Portraits</h3><p>Stories in every face</p></div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=600&q=80" alt="Landscape">
+                <div class="overlay"><h3>Landscapes</h3><p>Nature's finest moments</p></div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1551818255-e6e10975bc17?w=600&q=80" alt="Events">
+                <div class="overlay"><h3>Events</h3><p>Corporate & social gatherings</p></div>
+            </div>
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=600&q=80" alt="Product">
+                <div class="overlay"><h3>Product</h3><p>Commercial photography</p></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section id="services" class="services-section">
+        <h2 class="section-title">Services</h2>
+        <p class="section-subtitle">Tailored photography experiences for every occasion</p>
+        <div class="services-grid">
+            <div class="service-card">
+                <div class="icon">&#128141;</div>
+                <h3>Wedding Photography</h3>
+                <p>Full-day coverage capturing every precious moment of your special day.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128247;</div>
+                <h3>Portrait Sessions</h3>
+                <p>Professional headshots, family portraits, and creative personal branding.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#127917;</div>
+                <h3>Event Coverage</h3>
+                <p>Corporate events, galas, concerts, and private celebrations.</p>
+            </div>
+            <div class="service-card">
+                <div class="icon">&#128717;</div>
+                <h3>Commercial Work</h3>
+                <p>Product photography, brand campaigns, and editorial shoots.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section id="about">
+        <div class="about-grid">
+            <img src="https://images.unsplash.com/photo-1554048612-b6a482bc67e5?w=600&q=80" alt="Photographer at work">
+            <div class="about-content">
+                <h2>About {{businessName}}</h2>
+                <p>{{aboutText}}</p>
+                <p>With an eye for the extraordinary in the ordinary, we capture emotions, tell stories, and create art through our lens. Every shoot is a unique collaboration between photographer and subject.</p>
+                <p>Our work has been featured in Vogue, National Geographic, and numerous international publications.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" style="background: #f9f9f9;">
+        <h2 class="section-title">Investment</h2>
+        <p class="section-subtitle">Packages designed to fit your vision and budget</p>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="plan-name">Essential</div>
+                <div class="price">$500</div>
+                <ul class="features">
+                    <li>2-hour session</li>
+                    <li>1 location</li>
+                    <li>50 edited images</li>
+                    <li>Online gallery</li>
+                    <li>Digital downloads</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Book Now</a>
+            </div>
+            <div class="pricing-card featured">
+                <div class="plan-name">Premium</div>
+                <div class="price">$1,200</div>
+                <ul class="features">
+                    <li>4-hour session</li>
+                    <li>2 locations</li>
+                    <li>150 edited images</li>
+                    <li>Online gallery</li>
+                    <li>Print-ready files</li>
+                    <li>1 canvas print</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Book Now</a>
+            </div>
+            <div class="pricing-card">
+                <div class="plan-name">Luxury</div>
+                <div class="price">$2,500</div>
+                <ul class="features">
+                    <li>Full-day coverage</li>
+                    <li>Unlimited locations</li>
+                    <li>300+ edited images</li>
+                    <li>Premium album</li>
+                    <li>Fine art prints</li>
+                    <li>Second photographer</li>
+                </ul>
+                <a href="#contact" class="pricing-btn">Book Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials-section">
+        <h2 class="section-title">Kind Words</h2>
+        <p class="section-subtitle">From clients who trusted us with their most precious moments</p>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="quote">"Our wedding photos are absolutely breathtaking. They captured moments we didn't even know happened. Every time we look at them, we relive the magic."</div>
+                <div class="author">Emily & James Morrison</div>
+                <div class="role">Wedding, June 2023</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"The brand photography elevated our entire marketing presence. Sales increased 40% after we updated our website with the new images."</div>
+                <div class="author">Sophia Laurent</div>
+                <div class="role">CEO, Luxe Cosmetics</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="quote">"Such a talented and creative eye. Made our family feel completely at ease, and the resulting portraits are stunning works of art."</div>
+                <div class="author">The Richardson Family</div>
+                <div class="role">Family Portrait, 2023</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact">
+        <h2 class="section-title">Get In Touch</h2>
+        <p class="section-subtitle">Let's create something beautiful together</p>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <div class="info-item">
+                    <div class="icon">&#128222;</div>
+                    <div><strong>Phone</strong><br>{{phone}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#9993;</div>
+                    <div><strong>Email</strong><br>{{email}}</div>
+                </div>
+                <div class="info-item">
+                    <div class="icon">&#128205;</div>
+                    <div><strong>Studio</strong><br>{{address}}</div>
+                </div>
+            </div>
+            <div class="contact-form">
+                <input type="text" placeholder="Your Name">
+                <input type="email" placeholder="Email Address">
+                <select><option>Type of Shoot</option><option>Wedding</option><option>Portrait</option><option>Event</option><option>Commercial</option><option>Other</option></select>
+                <textarea placeholder="Tell us about your vision"></textarea>
+                <button class="btn-primary" style="width:100%; background: var(--accent); border-color: var(--accent);">Send Inquiry</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 {{businessName}}. All rights reserved. | <a href="#portfolio">View Work</a></p>
+    </footer>
+
+    <script>
+        document.querySelector('.nav-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+    </script>
+</body>
+</html>
